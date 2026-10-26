@@ -75,7 +75,7 @@ body[data-available="false"] .status-dot::after{animation:none;opacity:.6}
 
 /* HERO */
 #home{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:7rem clamp(1rem,5vw,4rem) 5rem;perspective:1400px}
-.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.25fr .75fr;gap:3rem;align-items:center;transform-style:preserve-3d;will-change:transform}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.25fr .75fr;gap:3rem;align-items:center;will-change:transform}
 .hero-badge{display:inline-flex;align-items:center;gap:.6rem;padding:.45rem 1rem .45rem .8rem;border:1px solid var(--border);border-radius:100px;font-size:.8rem;color:var(--text2);background:rgba(124,58,237,.08);backdrop-filter:blur(8px);margin-bottom:1.6rem;font-family:'JetBrains Mono',monospace;transition:border-color .4s,background .4s}
 body[data-available="false"] .hero-badge{border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.06)}
 .hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3.4rem,10vw,8.5rem);line-height:.92;letter-spacing:-.045em;margin-bottom:1.4rem}
@@ -130,7 +130,7 @@ body[data-available="false"] .avatar-dot::after{animation:none;opacity:.5}
 section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .section-inner{max-width:1200px;margin:0 auto}
 .stage{perspective:1200px;perspective-origin:50% 30%}
-[data-3d]{transform-style:preserve-3d;will-change:transform,opacity;backface-visibility:hidden}
+[data-3d]{will-change:transform,opacity}
 .section-label{display:inline-flex;align-items:center;gap:.7rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--purple3);letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem}
 .section-label::before{content:'';width:28px;height:1px;background:linear-gradient(90deg,var(--purple2),transparent)}
 .section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.4rem,6vw,4.6rem);line-height:1;letter-spacing:-.035em;margin-bottom:3.5rem}
@@ -139,7 +139,7 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .glass{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.01));border:1px solid var(--border2);border-radius:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:relative;overflow:hidden}
 .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(168,85,247,.55),transparent 45%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s;pointer-events:none}
 .glass:hover::before{opacity:1}
-.tilt{transition:transform .2s ease-out,border-color .4s;transform-style:preserve-3d}
+.tilt{transition:transform .2s ease-out,border-color .4s}
 
 /* ABOUT */
 .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:start}
@@ -163,7 +163,7 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 /* SKILLS */
-.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
 .skill-card{padding:1.7rem}
 .skill-head{display:flex;align-items:center;gap:.8rem;margin-bottom:1.3rem}
 .skill-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.15rem;background:rgba(124,58,237,.15);border:1px solid var(--border)}
@@ -285,7 +285,6 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
 /* RESPONSIVE */
 @media (max-width:1024px){
   .skills-grid{grid-template-columns:repeat(2,1fr)}
-  .skills-grid .skill-card:last-child{grid-column:span 2}
   .services-grid{grid-template-columns:1fr 1fr}
   .services-grid .service-card:last-child{grid-column:span 2}
   .chip-a{left:-6%}.chip-b{left:-8%}.chip-c{right:-6%}
@@ -313,7 +312,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
 }
 @media (max-width:560px){
   .skills-grid,.services-grid{grid-template-columns:1fr}
-  .services-grid .service-card:last-child,.skills-grid .skill-card:last-child{grid-column:auto}
+  .services-grid .service-card:last-child{grid-column:auto}
   .hero-stats{gap:1.6rem}
   .section-title{margin-bottom:2.4rem}
   .availability-banner{padding:1.6rem}
@@ -456,6 +455,10 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
       <div class="skill-card glass tilt" data-3d>
         <div class="skill-head"><div class="skill-icon">🛠</div><span class="skill-title">Tools &amp; Cloud</span></div>
         <div class="skill-tags"><span class="skill-tag">Git &amp; GitHub</span><span class="skill-tag">Supabase</span><span class="skill-tag">Vercel</span><span class="skill-tag">AWS</span><span class="skill-tag">Figma</span><span class="skill-tag">Antigravity</span></div>
+      </div>
+      <div class="skill-card glass tilt" data-3d>
+        <div class="skill-head"><div class="skill-icon">🤖</div><span class="skill-title">AI</span></div>
+        <div class="skill-tags"><span class="skill-tag ai">Prompt Engineering</span><span class="skill-tag ai">AI-powered apps</span><span class="skill-tag ai">Rapid prototyping</span></div>
       </div>
     </div>
   </div>
@@ -897,7 +900,7 @@ function render3d(){
     const outZ = (1 - leave) * -160, outRX = (1 - leave) * -22;
     const isTilt = el.classList.contains('tilt');
     el.style.transform =
-      `translate3d(0,${inY}px,${inZ + outZ}px) rotateX(${inRX + outRX}deg)` +
+      `perspective(1200px) translate3d(0,${inY}px,${inZ + outZ}px) rotateX(${inRX + outRX}deg)` +
       (isTilt ? ' rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))' : '');
     el.style.opacity = Math.min(e * 1.15, .25 + leave * .75).toFixed(3);
   }
