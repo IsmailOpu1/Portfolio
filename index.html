@@ -157,6 +157,21 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .about-item h4{font-size:.98rem;font-weight:600}
 .about-item p{font-size:.84rem;color:var(--text3)}
 
+/* EXPERIENCE */
+.timeline{position:relative;display:flex;flex-direction:column;gap:1.4rem;padding-left:2.2rem}
+.timeline::before{content:'';position:absolute;left:.55rem;top:.6rem;bottom:.6rem;width:1px;background:linear-gradient(var(--purple2),var(--cyan),transparent)}
+.job{padding:1.8rem 2rem}
+.job::after{content:'';position:absolute;left:-2.05rem;top:2.1rem;width:12px;height:12px;border-radius:50%;background:var(--purple2);box-shadow:0 0 0 4px rgba(124,58,237,.2),0 0 18px var(--purple2)}
+.timeline .job{overflow:visible}
+.job-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.9rem}
+.job h3{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:-.01em}
+.job-org{color:var(--purple3);font-size:.92rem;margin-top:.15rem}
+.job-date{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--text2);padding:.3rem .75rem;border-radius:100px;border:1px solid var(--border2);background:rgba(255,255,255,.03);white-space:nowrap}
+.job-date.now{color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.06)}
+.job ul{list-style:none;display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.1rem}
+.job li{color:var(--text2);font-size:.92rem;padding-left:1.2rem;position:relative}
+.job li::before{content:'→';position:absolute;left:0;color:var(--purple2)}
+
 /* MARQUEE */
 .marquee{position:relative;z-index:2;overflow:hidden;padding:1.4rem 0;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);background:rgba(13,11,24,.5);transform:rotate(-2deg) scale(1.04);margin:2rem 0}
 .marquee-track{display:flex;gap:3rem;width:max-content;animation:marquee 32s linear infinite}
@@ -319,6 +334,10 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
   .hero-stats{gap:1.6rem}
   .section-title{margin-bottom:2.4rem}
   .availability-banner{padding:1.6rem}
+  .timeline{padding-left:1.6rem}
+  .timeline::before{left:.3rem}
+  .job{padding:1.4rem}
+  .job::after{left:-1.6rem}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -353,6 +372,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
   <ul class="nav-links">
     <li><a href="#home">Home</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#services">Services</a></li>
@@ -365,6 +385,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
 <div id="mobile-menu">
   <a href="#home">Home</a>
   <a href="#about">About</a>
+  <a href="#experience">Experience</a>
   <a href="#skills">Skills</a>
   <a href="#projects">Projects</a>
   <a href="#services">Services</a>
@@ -424,10 +445,52 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
       </div>
       <div class="about-card glass tilt" data-3d>
         <div class="about-item"><div class="about-icon">🎓</div><div><h4>B.Sc. Computer Science</h4><p>Brac University · 2023 – 2027</p></div></div>
+        <div class="about-item"><div class="about-icon">🧪</div><div><h4>Physics Instructor</h4><p>Hulkenstein · Dec 2025 – Present</p></div></div>
         <div class="about-item"><div class="about-icon">💼</div><div><h4>Freelance Developer</h4><p>Upwork · Full-stack projects</p></div></div>
         <div class="about-item"><div class="about-icon">🌐</div><div><h4>Full-Stack Focus</h4><p>React, Node.js, TypeScript, Supabase</p></div></div>
         <div class="about-item"><div class="about-icon">🤖</div><div><h4>AI-Powered Products</h4><p>AI features shipped in real SaaS apps</p></div></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="stage">
+  <div class="section-inner">
+    <div data-3d>
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">Where I've <em>worked</em></h2>
+    </div>
+    <div class="timeline">
+      <article class="job glass tilt" data-3d>
+        <div class="job-head">
+          <div>
+            <h3>Physics Instructor</h3>
+            <p class="job-org">Hulkenstein · Online tech-ed</p>
+          </div>
+          <span class="job-date now">Dec 2025 – Present</span>
+        </div>
+        <ul>
+          <li>Teach physics to the private university admission batch through recorded online classes</li>
+          <li>Recorded 36+ classes on a smart board, sold to students as paid courses</li>
+          <li>Turn hard concepts into clear, step-by-step lessons students can follow on their own</li>
+        </ul>
+        <div class="stack"><span>Physics</span><span>Teaching</span><span>Video lessons</span><span>Smart board</span></div>
+      </article>
+      <article class="job glass tilt" data-3d>
+        <div class="job-head">
+          <div>
+            <h3>Freelance Full-Stack Developer</h3>
+            <p class="job-org">Upwork · Remote</p>
+          </div>
+          <span class="job-date">Freelance</span>
+        </div>
+        <ul>
+          <li>Build and deliver web projects for clients, from first requirements to deployment</li>
+          <li>Work to real deadlines and client feedback</li>
+        </ul>
+        <div class="stack"><span>React</span><span>TypeScript</span><span>Node.js</span><span>Supabase</span></div>
+      </article>
     </div>
   </div>
 </section>
@@ -641,7 +704,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
       </div>
       <div>
         <h5>Navigate</h5>
-        <ul><li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#services">Services</a></li></ul>
+        <ul><li><a href="#about">About</a></li><li><a href="#experience">Experience</a></li><li><a href="#skills">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#services">Services</a></li></ul>
       </div>
       <div>
         <h5>Elsewhere</h5>
