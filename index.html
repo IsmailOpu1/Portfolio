@@ -246,6 +246,10 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .contact-icon svg{width:22px;height:22px}
 .contact-card h4{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700}
 .contact-card p{color:var(--text3);font-size:.85rem}
+.card-link{position:absolute;inset:0;z-index:1;border-radius:inherit}
+.copy-btn{position:relative;z-index:2;align-self:flex-start;margin-top:.8rem;padding:.4rem .85rem;border-radius:100px;border:1px solid var(--border);background:rgba(124,58,237,.1);color:var(--text2);font:inherit;font-size:.75rem;cursor:pointer;transition:all .3s}
+.copy-btn:hover{color:#fff;border-color:var(--purple2);background:rgba(124,58,237,.22)}
+.copy-btn.copied{color:#4ade80;border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.08)}
 .contact-value{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--purple3);margin-top:.6rem;word-break:break-all}
 .availability-banner{padding:2rem 2.2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;border-color:rgba(34,197,94,.22);background:linear-gradient(135deg,rgba(34,197,94,.07),rgba(124,58,237,.05))}
 body[data-available="false"] .availability-banner{border-color:rgba(248,113,113,.22);background:linear-gradient(135deg,rgba(248,113,113,.06),rgba(80,80,80,.03))}
@@ -606,7 +610,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
           </ul>
           <div class="stack"><span>React</span><span>TypeScript</span><span>Supabase</span><span>PostgreSQL</span><span>TanStack Query</span><span>Tailwind</span></div>
           <div class="project-links">
-            <a class="plink primary" href="mailto:ismailopu0.0@gmail.com?subject=ShopMind%20AI%20demo">Request a demo ↗</a>
+            <a class="plink primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ismailopu0.0@gmail.com&amp;su=ShopMind%20AI%20demo" target="_blank" rel="noopener">Request a demo ↗</a>
           </div>
         </div>
       </article>
@@ -659,10 +663,12 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
       <h2 class="section-title">Let's <em>talk</em></h2>
     </div>
     <div class="contact-grid">
-      <a href="mailto:ismailopu0.0@gmail.com" class="contact-card glass tilt" data-3d>
+      <div class="contact-card glass tilt" data-3d>
+        <a class="card-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ismailopu0.0@gmail.com" target="_blank" rel="noopener" aria-label="Email Ismail in Gmail"></a>
         <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
         <h4>Email</h4><p>Say hello directly</p><span class="contact-value">ismailopu0.0@gmail.com</span>
-      </a>
+        <button class="copy-btn" type="button" data-copy="ismailopu0.0@gmail.com">Copy address</button>
+      </div>
       <a href="https://github.com/IsmailOpu1" target="_blank" rel="noopener" class="contact-card glass tilt" data-3d>
         <div class="contact-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8 0 3.2.9.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1 .9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg></div>
         <h4>GitHub</h4><p>See my code</p><span class="contact-value">github.com/IsmailOpu1</span>
@@ -697,7 +703,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
 <footer>
   <div class="footer-inner">
     <div class="footer-cta">
-      <div class="footer-big">Have an idea?<br><a href="mailto:ismailopu0.0@gmail.com">Let's build it.</a></div>
+      <div class="footer-big">Have an idea?<br><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ismailopu0.0@gmail.com" target="_blank" rel="noopener">Let's build it.</a></div>
       <a href="#contact" class="btn btn-primary magnetic">✦ Start a project</a>
     </div>
     <div class="footer-cols">
@@ -715,7 +721,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
         <ul>
           <li><a href="https://github.com/IsmailOpu1" target="_blank" rel="noopener">GitHub ↗</a></li>
           <li><a href="https://www.linkedin.com/in/ismail-opu-aa8127276" target="_blank" rel="noopener">LinkedIn ↗</a></li>
-          <li><a href="mailto:ismailopu0.0@gmail.com">Email ↗</a></li>
+          <li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ismailopu0.0@gmail.com" target="_blank" rel="noopener">Email ↗</a></li>
         </ul>
       </div>
     </div>
@@ -823,6 +829,21 @@ function toggleOwnerPanel(){
   panel.classList.toggle('visible');
   if (panel.classList.contains('visible')) panel.scrollIntoView({ behavior:'smooth', block:'center' });
 }
+
+/* ───────── COPY EMAIL ───────── */
+document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', async () => {
+  const text = btn.dataset.copy;
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); } catch {}
+    t.remove();
+  }
+  btn.textContent = 'Copied ✓';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy address'; btn.classList.remove('copied'); }, 2000);
+}));
 
 /* ───────── MOBILE MENU ───────── */
 function toggleMobileMenu(){
