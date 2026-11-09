@@ -29,8 +29,8 @@
   --ease:cubic-bezier(.2,.8,.2,1);
 }
 body[data-available="false"]{--status:var(--red);--status-glow:var(--red-glow)}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;overflow-x:clip;line-height:1.6;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 a{color:inherit}
 ::selection{background:var(--purple);color:#fff}
@@ -180,6 +180,7 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .job li::before{content:'→';position:absolute;left:0;color:var(--purple2)}
 
 /* MARQUEE */
+.marquee-wrap{overflow:hidden;overflow:clip;padding:1rem 0}
 .marquee{position:relative;z-index:2;overflow:hidden;padding:1.4rem 0;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);background:rgba(13,11,24,.5);transform:rotate(-2deg) scale(1.04);margin:2rem 0}
 .marquee-track{display:flex;gap:3rem;width:max-content;animation:marquee 32s linear infinite}
 .marquee span{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(196,181,253,.45);white-space:nowrap;display:flex;align-items:center;gap:3rem}
@@ -426,6 +427,7 @@ body.haunted #wander{opacity:.9;animation:wander 24s ease-in-out infinite}
 #term-out a{color:var(--cyan)}
 .term-line{display:flex;align-items:center;gap:.6rem;padding:.4rem 1rem .9rem}
 .term-line label{color:var(--purple3);white-space:nowrap}
+@media (max-width:860px),(hover:none){#term-in,.unlock-input{font-size:16px!important}}
 #term-in{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);font:inherit;caret-color:var(--pink)}
 .secrets{background:none;border:0;padding:0;font:inherit;font-size:.8rem;color:var(--text3);cursor:pointer;transition:color .3s}
 .secrets:hover{color:var(--purple3)}
@@ -593,12 +595,12 @@ body.haunted #wander{opacity:.9;animation:wander 24s ease-in-out infinite}
   </div>
 </section>
 
-<div class="marquee" aria-hidden="true">
+<div class="marquee-wrap"><div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <span>React</span><span>TypeScript</span><span>Next.js</span><span>Node.js</span><span>Supabase</span><span>PostgreSQL</span><span>Tailwind</span><span>Three.js</span><span>AI</span>
     <span>React</span><span>TypeScript</span><span>Next.js</span><span>Node.js</span><span>Supabase</span><span>PostgreSQL</span><span>Tailwind</span><span>Three.js</span><span>AI</span>
   </div>
-</div>
+</div></div>
 
 <!-- SKILLS -->
 <section id="skills" class="stage">
