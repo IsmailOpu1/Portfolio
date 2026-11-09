@@ -58,6 +58,11 @@ nav.scrolled{background:rgba(7,6,13,.72);backdrop-filter:blur(18px);-webkit-back
 .nav-links a:hover,.nav-links a.active{color:var(--text)}
 .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);transform-origin:left}
 .nav-status{display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text2);padding:.4rem .8rem;border:1px solid var(--border2);border-radius:100px;background:rgba(255,255,255,.02)}
+.nav-right{display:flex;align-items:center;gap:.6rem}
+.nav-term{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text2);padding:.4rem .85rem;border:1px solid var(--border);border-radius:100px;background:rgba(124,58,237,.1);cursor:pointer;transition:color .3s,border-color .3s,background .3s,box-shadow .3s}
+.nav-term:hover{color:var(--text);border-color:var(--purple2);background:rgba(124,58,237,.2);box-shadow:0 0 22px -6px rgba(168,85,247,.7)}
+.nav-term-icon{color:var(--cyan);font-weight:700;letter-spacing:-.05em}
+.nav-term-icon::after{content:'';display:inline-block;width:.45em;height:.9em;margin-left:2px;vertical-align:-.12em;background:var(--pink);animation:blink 1s steps(1) infinite}
 .nav-hamburger{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--border2);background:rgba(255,255,255,.03);cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .nav-hamburger span{width:18px;height:1.5px;background:var(--text);transition:transform .3s,opacity .3s}
 body.menu-open .nav-hamburger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
@@ -367,6 +372,65 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   html{scroll-behavior:auto}
 }
+/* ───────── FUN: live ticker · haunted mode · terminal · ghost hunt ───────── */
+.hero-side{display:flex;flex-direction:column;align-items:center;gap:7rem;justify-self:center;min-width:0;margin-top:-5rem}
+.ticker{display:flex;flex-direction:column;gap:.3rem;width:min(420px,86vw);padding:.8rem 1.15rem;border-radius:16px;text-decoration:none;color:var(--text);background:linear-gradient(160deg,rgba(30,25,52,.88),rgba(14,12,28,.84));border:1px solid var(--border);box-shadow:0 18px 50px -20px rgba(124,58,237,.55);transition:border-color .3s,transform .3s;animation:tickIn .8s var(--ease) both}
+@keyframes tickIn{from{opacity:0;transform:translateY(12px)}}
+.ticker[hidden]{display:none}
+.ticker:hover{border-color:var(--purple2);transform:translateY(-2px)}
+.ticker-top{display:flex;align-items:center;gap:.55rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.ticker-top i{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex-shrink:0;animation:pulse 2s ease infinite}
+.ticker-main{font-size:.98rem;line-height:1.4;color:var(--text);overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.ticker-main b{color:var(--purple3);font-weight:600;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.ticker-sub{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text3)}
+#haunt{position:fixed;inset:0;z-index:150;pointer-events:none;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s}
+body.haunted #haunt{opacity:1;visibility:visible;animation:flicker 9s steps(1) infinite}
+#haunt .beam{position:absolute;left:-150vmax;top:-150vmax;width:300vmax;height:300vmax;will-change:transform;background:radial-gradient(circle at center,rgba(0,0,0,0) 0,rgba(0,0,0,0) 110px,rgba(4,3,10,.55) 170px,rgba(4,3,10,.94) 250px,rgba(4,3,10,.97) 100%)}
+@keyframes flicker{0%,93%,100%{opacity:1}94%{opacity:.55}95%{opacity:1}96.5%{opacity:.7}}
+.px-ghost{display:block;image-rendering:pixelated;filter:drop-shadow(0 0 12px rgba(196,181,253,.6))}
+#wander{position:fixed;z-index:151;left:0;top:0;width:54px;pointer-events:none;opacity:0;transition:opacity .8s}
+body.haunted #wander{opacity:.9;animation:wander 24s ease-in-out infinite}
+@keyframes wander{0%{transform:translate(8vw,70vh)}20%{transform:translate(70vw,20vh)}40%{transform:translate(85vw,75vh)}60%{transform:translate(35vw,45vh)}80%{transform:translate(12vw,15vh)}100%{transform:translate(8vw,70vh)}}
+#peek{position:fixed;z-index:120;left:0;top:0;width:46px;padding:0;border:0;background:none;cursor:pointer;opacity:0;pointer-events:none;transform:translate(var(--px),var(--py)) scale(.4);transition:opacity .35s,transform .45s cubic-bezier(.2,1.4,.4,1)}
+#peek.on{opacity:1;pointer-events:auto;transform:translate(var(--px),var(--py)) scale(1)}
+#peek.on img{animation:gbob 2.2s ease-in-out infinite}
+@keyframes gbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+#peek.poof{opacity:0;transform:translate(var(--px),var(--py)) scale(1.8);transition:opacity .3s,transform .3s}
+.px-bit{position:fixed;z-index:281;width:6px;height:6px;pointer-events:none;animation:burst .9s ease-out forwards}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+#toast{position:fixed;z-index:280;left:50%;bottom:1.4rem;max-width:min(560px,calc(100vw - 2rem));transform:translate(-50%,140%);opacity:0;transition:transform .45s var(--ease),opacity .45s;display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem .8rem 1.1rem;border-radius:14px;background:rgba(16,13,32,.97);border:1px solid var(--border);box-shadow:0 18px 50px -12px rgba(0,0,0,.7);font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text);line-height:1.5}
+#toast.show{transform:translate(-50%,0);opacity:1}
+#gift{position:fixed;inset:0;z-index:290;display:grid;place-items:center;padding:1rem;background:rgba(4,3,8,.62);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+#gift.show{opacity:1;visibility:visible}
+.gift-card{width:min(460px,92vw);padding:2rem 1.8rem 1.6rem;text-align:center;border-radius:22px;background:linear-gradient(160deg,rgba(34,27,60,.98),rgba(14,12,28,.98));border:1px solid var(--border);box-shadow:0 30px 90px -20px rgba(124,58,237,.6);transform:translateY(16px) scale(.96);transition:transform .5s var(--ease)}
+#gift.show .gift-card{transform:none}
+.gift-ghost{display:flex;justify-content:center;margin-bottom:1rem}
+.gift-ghost img{width:58px;height:auto;animation:gbob 2.2s ease-in-out infinite}
+.gift-kicker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:.9rem}
+.gift-text{font-size:1.18rem;line-height:1.55;color:var(--text);margin-bottom:1.5rem}
+.gift-actions{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+.gift-actions .plink{cursor:pointer;font:inherit;font-size:.85rem}
+#toast button{flex-shrink:0;font:inherit;font-size:.74rem;padding:.35rem .75rem;border-radius:100px;border:1px solid var(--purple2);background:rgba(124,58,237,.18);color:var(--text);cursor:pointer}
+#term{position:fixed;z-index:260;left:50%;top:0;width:min(760px,94vw);height:min(460px,62vh);display:flex;flex-direction:column;transform:translate(-50%,-105%);transition:transform .45s var(--ease);background:rgba(10,8,22,.98);border:1px solid var(--border);border-top:0;border-radius:0 0 18px 18px;box-shadow:0 30px 80px -20px rgba(0,0,0,.85);font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.6}
+#term.open{transform:translate(-50%,0)}
+.term-bar{display:flex;align-items:center;gap:.45rem;padding:.65rem 1rem;border-bottom:1px solid var(--border2);color:var(--text3);font-size:.7rem}
+.term-bar i{width:10px;height:10px;border-radius:50%;background:#3b3556}
+.term-bar i:nth-child(1){background:#f87171}.term-bar i:nth-child(2){background:#fbbf24}.term-bar i:nth-child(3){background:#4ade80}
+.term-bar span{margin-left:.5rem}
+.term-bar button{margin-left:auto;background:none;border:0;color:var(--text3);font:inherit;cursor:pointer;font-size:.75rem}
+#term-out{flex:1;overflow-y:auto;padding:.9rem 1rem .2rem;color:var(--text2);white-space:pre-wrap;word-break:break-word;overscroll-behavior:contain}
+#term-out .c{color:var(--text)}
+#term-out .p{color:var(--purple3)}
+#term-out .g{color:#4ade80}
+#term-out .k{color:var(--cyan)}
+#term-out a{color:var(--cyan)}
+.term-line{display:flex;align-items:center;gap:.6rem;padding:.4rem 1rem .9rem}
+.term-line label{color:var(--purple3);white-space:nowrap}
+#term-in{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);font:inherit;caret-color:var(--pink)}
+.secrets{background:none;border:0;padding:0;font:inherit;font-size:.8rem;color:var(--text3);cursor:pointer;transition:color .3s}
+.secrets:hover{color:var(--purple3)}
+@media (max-width:860px){.hero-side{order:-1;gap:1.8rem;margin-top:0}.ticker{text-align:left}.ticker-main{-webkit-line-clamp:2}}
+@media (prefers-reduced-motion:reduce){body.haunted #haunt,body.haunted #wander,#peek.on img{animation:none}}
 </style>
 </head>
 <body data-available="true">
@@ -402,8 +466,11 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
     <li><a href="#services">Services</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="nav-status"><span class="status-dot"></span><span class="js-status-short">Available</span></div>
-  <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open menu" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <button class="nav-term" id="nav-term" type="button" aria-label="Open the terminal: learn about me" title="Open the terminal (or press ~)"><span class="nav-term-icon">&gt;_</span><span class="nav-term-label">terminal</span></button>
+    <div class="nav-status"><span class="status-dot"></span><span class="js-status-short">Available</span></div>
+    <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open menu" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+  </div>
 </nav>
 
 <div id="mobile-menu">
@@ -438,6 +505,12 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
         <a href="#contact" class="btn btn-ghost magnetic">✦ Get in touch</a>
       </div>
     </div>
+    <div class="hero-side">
+    <a class="ticker" id="ticker" target="_blank" rel="noopener" hidden>
+      <span class="ticker-top"><i></i>Live from GitHub · currently building</span>
+      <span class="ticker-main" id="ticker-text"></span>
+      <span class="ticker-sub" id="ticker-sub"></span>
+    </a>
     <div class="hero-visual fade-in d3" id="hero-visual">
       <div class="avatar-orbit"></div>
       <div class="avatar-ring"></div>
@@ -446,6 +519,7 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
       <div class="float-chip chip-a">⚛ <b>React</b> + TypeScript</div>
       <div class="float-chip chip-b">🎮 <b>3D</b> browser games</div>
       <div class="float-chip chip-c">⚡ <b>Supabase</b> · AI</div>
+    </div>
     </div>
   </div>
   <div class="scroll-hint"><div class="mouse"></div>Scroll</div>
@@ -771,6 +845,16 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
   </div>
 </footer>
 
+<div id="haunt" aria-hidden="true"><div class="beam" id="beam"></div></div>
+<div id="wander" aria-hidden="true"></div>
+<button id="peek" type="button" aria-label="Catch the ghost"></button>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="term" role="dialog" aria-label="Terminal" aria-hidden="true">
+  <div class="term-bar"><i></i><i></i><i></i><span>visitor@ismailopu: ~</span><button type="button" id="term-close">esc ✕</button></div>
+  <div id="term-out"></div>
+  <form class="term-line" id="term-form" autocomplete="off"><label for="term-in">visitor@ismailopu:~$</label><input id="term-in" spellcheck="false" autocapitalize="off" aria-label="Terminal command"></form>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1089,6 +1173,336 @@ render3d();
     stage.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { stage.classList.remove('show'); last = -1; } });
   }).catch(() => { section.hidden = true; });   // GitHub unreachable: leave the section out
 })();
+
+/* ───────── FUN STUFF ───────── */
+const GMAIL = 'https://mail.google.com/mail/?view=cm&fs=1&to=ismailopu0.0@gmail.com';
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v){ try { localStorage.setItem(k, v); } catch {} },
+};
+const typingInField = () => { const a = document.activeElement; return a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable); };
+
+// pixel ghost sprite (same one that floats over the GitHub city)
+const GHOST_ROWS = ['....wwwww....','..wwwwwwwww..','.wwwwwwwwwww.','.wwkkwwwkkww.','wwwkkwwwkkwww','wwwwwwwwwwwww','wwwwwpppwwwww','wwwwwwpwwwwww','wwwwwwwwwwwww','wwwwwwwwwwwww','ww.www.www.ww','w...w...w...w'];
+const GHOST_SRC = 'data:image/svg+xml,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 12" shape-rendering="crispEdges">` +
+  GHOST_ROWS.map((row, y) => [...row].map((c, x) => c === '.' ? '' :
+    `<rect x="${x}" y="${y}" width="1" height="1" fill="${{ w:'#f5f3ff', k:'#1e1b4b', p:'#f472b6' }[c]}"/>`).join('')).join('') + `</svg>`);
+function ghostImg(){ const i = new Image(); i.src = GHOST_SRC; i.alt = ''; i.className = 'px-ghost'; i.width = 46; i.height = 42; return i; }
+
+// toast
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function toast(msg, action){
+  toastEl.textContent = '';
+  const t = document.createElement('span'); t.textContent = msg; toastEl.append(t);
+  if (action) {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = action.label;
+    b.onclick = () => { hideToast(); action.run(); };
+    toastEl.append(b);
+  }
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, action ? 7000 : 4200);
+}
+function hideToast(){ toastEl.classList.remove('show'); }
+
+// little pixel burst
+function burst(x, y){
+  const colors = ['#c084fc', '#22d3ee', '#f472b6', '#f5f3ff'];
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('i'); b.className = 'px-bit';
+    const a = Math.random() * Math.PI * 2, d = 40 + Math.random() * 70;
+    b.style.cssText = `left:${x}px;top:${y}px;background:${colors[i % 4]};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px`;
+    document.body.append(b);
+    setTimeout(() => b.remove(), 950);
+  }
+}
+
+/* 1 · LIVE TICKER: latest push to one of my public repos */
+(function(){
+  const el = document.getElementById('ticker'), txt = document.getElementById('ticker-text');
+  const ago = iso => {
+    const m = Math.max(1, Math.round((Date.now() - new Date(iso)) / 60000));
+    if (m < 60) return m + 'm ago';
+    const h = Math.round(m / 60); if (h < 48) return h + 'h ago';
+    return Math.round(h / 24) + 'd ago';
+  };
+  function show(d){
+    if (!d || !d.repo) return;
+    el.href = d.url;
+    txt.textContent = '';
+    const b = document.createElement('b'); b.textContent = d.repo; txt.append(b);
+    if (d.msg) txt.append(' — ' + (d.msg.length > 90 ? d.msg.slice(0, 88) + '…' : d.msg));
+    document.getElementById('ticker-sub').textContent = 'pushed ' + ago(d.at) + ' · view commit ↗';
+    el.hidden = false;
+  }
+  let cached = null;
+  try { cached = JSON.parse(sessionStorage.getItem('ticker') || 'null'); } catch {}
+  if (cached && Date.now() - cached.t < 10 * 60000) return show(cached.d);
+  fetch('https://api.github.com/users/IsmailOpu1/events/public?per_page=40')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(events => {
+      // skip the profile repo: its nightly bot redraws aren't "work"
+      const push = events.find(e => e.type === 'PushEvent' && e.repo.name !== 'IsmailOpu1/IsmailOpu1');
+      if (!push) return Promise.reject();
+      const repo = push.repo.name.split('/')[1];
+      return fetch(`https://api.github.com/repos/${push.repo.name}/commits/${push.payload.head}`)
+        .then(r => r.ok ? r.json() : null).catch(() => null)
+        .then(c => ({ repo, at: push.created_at,
+          msg: c && c.commit ? c.commit.message.split('\n')[0] : '',
+          url: c && c.html_url ? c.html_url : `https://github.com/${push.repo.name}` }));
+    })
+    .then(d => { try { sessionStorage.setItem('ticker', JSON.stringify({ t: Date.now(), d })); } catch {} show(d); })
+    .catch(() => {});   // offline or rate-limited: just don't show it
+})();
+
+/* 2 · HAUNTED MODE: lights out, your cursor is a flashlight */
+const beam = document.getElementById('beam');
+document.getElementById('wander').append(ghostImg());
+let beamX = innerWidth / 2, beamY = innerHeight / 2, beamQueued = false;
+function moveBeam(){ beamQueued = false; beam.style.transform = `translate3d(${beamX}px,${beamY}px,0)`; }
+function aimBeam(x, y){
+  beamX = x; beamY = y;
+  if (document.body.classList.contains('haunted') && !beamQueued) { beamQueued = true; requestAnimationFrame(moveBeam); }
+}
+window.addEventListener('pointermove', e => aimBeam(e.clientX, e.clientY), { passive:true });
+window.addEventListener('pointerdown', e => aimBeam(e.clientX, e.clientY), { passive:true });
+function setHaunted(on){
+  if (on === document.body.classList.contains('haunted')) return;
+  document.body.classList.toggle('haunted', on);
+  if (on) {
+    moveBeam();
+    toast(isTouch ? '👻 Lights out. Touch the screen to shine your flashlight.' : '👻 Lights out. Your cursor is a flashlight now. Type "boo" again to escape.',
+      { label: 'Lights on', run: () => setHaunted(false) });
+  } else toast('💡 Lights back on. That was spooky.');
+}
+let keyBuf = '';
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { setHaunted(false); closeTerm(); return; }
+  if (typingInField() || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === '`' || e.key === '~') { e.preventDefault(); toggleTerm(); return; }
+  if (e.key.length === 1) {
+    keyBuf = (keyBuf + e.key.toLowerCase()).slice(-3);
+    if (keyBuf === 'boo') { keyBuf = ''; setHaunted(!document.body.classList.contains('haunted')); }
+  }
+});
+
+/* 3 · GHOST HUNT: a ghost peeks out from behind cards; catch 5 */
+(function(){
+  const peek = document.getElementById('peek');
+  peek.append(ghostImg());
+  const GOAL = 3;
+  let caught = Math.min(GOAL - 1, +(store.get('ghosts_caught') || 0)), hideTimer, nextTimer;
+  function schedule(ms){ clearTimeout(nextTimer); if (caught < GOAL) nextTimer = setTimeout(show, ms); }
+  function show(){
+    if (document.hidden || term.classList.contains('open')) return schedule(8000);
+    const vh = innerHeight, vw = innerWidth;
+    const cards = [...document.querySelectorAll('.glass')].filter(c => {
+      const r = c.getBoundingClientRect();
+      return r.width > 180 && r.top > 80 && r.top < vh - 120 && r.right < vw + 5;
+    });
+    if (!cards.length) return schedule(5000);
+    const r = cards[Math.floor(Math.random() * cards.length)].getBoundingClientRect();
+    const left = Math.random() < .5;
+    peek.style.setProperty('--px', Math.max(4, left ? r.left - 18 : r.right - 30) + 'px');
+    peek.style.setProperty('--py', (r.top - 30) + 'px');
+    peek.classList.remove('poof');
+    peek.classList.add('on');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => { peek.classList.remove('on'); schedule(14000 + Math.random() * 14000); }, 3600);
+  }
+  peek.addEventListener('click', () => {
+    clearTimeout(hideTimer);
+    const r = peek.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2);
+    peek.classList.add('poof'); peek.classList.remove('on');
+    caught++;
+    if (caught < GOAL) {
+      store.set('ghosts_caught', caught);
+      toast(`👻 Caught one! ${caught}/${GOAL}. Catch ${GOAL - caught} more for a little gift…`);
+      schedule(9000 + Math.random() * 9000);
+    } else {
+      // round complete: hand out a gift, then start a new round so there's always another one to win
+      caught = 0; store.set('ghosts_caught', 0);
+      for (let i = 0; i < 4; i++) setTimeout(() => burst(innerWidth * (.2 + .2 * i), innerHeight * .45), i * 160);
+      setTimeout(showGift, 450);
+      schedule(30000 + Math.random() * 20000);
+    }
+  });
+  // a peeking ghost is pinned to where the card was, so hide it once the page moves
+  window.addEventListener('scroll', () => { if (peek.classList.contains('on')) { peek.classList.remove('on'); clearTimeout(hideTimer); schedule(9000); } }, { passive:true });
+  schedule(15000);
+  window.summonGhost = () => { if (caught >= GOAL) { caught = GOAL - 1; store.set('ghosts_caught', caught); } schedule(300); };
+})();
+
+/* 4 · SECRET TERMINAL: press ~ */
+const term = document.getElementById('term'), termOut = document.getElementById('term-out'), termIn = document.getElementById('term-in');
+let termBooted = false, termHist = [], histPos = 0;
+function print(html){ const d = document.createElement('div'); d.innerHTML = html; termOut.append(d); termOut.scrollTop = termOut.scrollHeight; }
+const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const link = (url, label) => `<a href="${url}" target="_blank" rel="noopener">${esc(label || url)}</a>`;
+function openTerm(){
+  term.classList.add('open'); term.setAttribute('aria-hidden', 'false');
+  if (!termBooted) {
+    termBooted = true;
+    print(`<span class="p">ismailopu.is-a.dev</span> · terminal v1.0\nHi 👋 I'm Ismail. This is the quick way to get to know me and what I build.\nType <span class="k">help</span> to see what you can do, or <span class="k">secrets</span> if you like surprises.\n<span class="c">esc</span> or <span class="k">exit</span> closes it.\n `);
+  }
+  setTimeout(() => termIn.focus(), 250);
+}
+function closeTerm(){ if (!term.classList.contains('open')) return; term.classList.remove('open'); term.setAttribute('aria-hidden', 'true'); termIn.blur(); }
+function toggleTerm(){ term.classList.contains('open') ? closeTerm() : openTerm(); }
+document.getElementById('term-close').onclick = closeTerm;
+termIn.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeTerm(); return; }
+  if (e.key === 'ArrowUp' && histPos > 0) { histPos--; termIn.value = termHist[histPos]; e.preventDefault(); }
+  if (e.key === 'ArrowDown') { histPos = Math.min(termHist.length, histPos + 1); termIn.value = termHist[histPos] || ''; e.preventDefault(); }
+});
+const FILES = {
+  'about.txt': () => 'Full-stack developer and CS student at BRAC University (graduating 2027).\nI build SaaS products, AI tools and multiplayer 3D browser games, from the\ndatabase schema to the deployed UI. I also teach physics at Hulkenstein.',
+  'skills.txt': () => 'frontend   React · Next.js · TypeScript · Tailwind · Three.js\nbackend    Node.js · Express · Supabase · PostgreSQL · MongoDB\nai         RAG · vector search (pgvector) · streaming LLM replies\nshipping   Git · Vercel · AWS',
+  'contact.txt': () => `email      ismailopu0.0@gmail.com  (type <span class="k">email</span> to write one)\nlinkedin   ${link('https://www.linkedin.com/in/ismail-opu-aa8127276', 'in/ismail-opu')}\ngithub     ${link('https://github.com/IsmailOpu1', 'IsmailOpu1')}`,
+};
+const CMDS = {
+  help: () => `<span class="c">whoami</span>      who is this guy
+<span class="c">projects</span>    things I've built
+<span class="c">skills</span>      what I work with
+<span class="c">contact</span>     how to reach me
+<span class="c">socials</span>     where else to find me
+<span class="c">stats</span>       my GitHub numbers, live
+<span class="c">play</span>        play Haunted Lobby
+<span class="c">haunt</span>       turn the lights out 👻
+<span class="c">ghost</span>       summon a ghost to catch
+<span class="c">secrets</span>     hidden things on this page
+<span class="c">ls</span> · <span class="c">cat</span> · <span class="c">clear</span> · <span class="c">exit</span>     the usual
+…and maybe a <span class="c">sudo</span> command or two.`,
+  whoami: () => `<span class="p">Ismail Opu</span> · full-stack developer · Dhaka, Bangladesh
+CS @ BRAC University (2027) · physics instructor at Hulkenstein
+status: ${document.body.dataset.available === 'false' ? '<span class="c">busy right now</span>' : '<span class="g">● open to work</span>'}`,
+  projects: () => `<span class="c">haunted-lobby</span>   3D co-op horror game where the ghost hears your real voice
+                ${link('https://haunted-lobby.vercel.app', 'play')} · ${link('https://github.com/IsmailOpu1/haunted-lobby', 'code')}
+<span class="c">shopmind-ai</span>     AI shopping assistant stores add with one script tag
+                ${link('https://shopmind-ai-tau.vercel.app', 'demo')} · ${link('https://github.com/IsmailOpu1/shopmind-ai-hub', 'code')}
+<span class="c">lumina</span>          SaaS for small businesses: orders, stock, profit, AI advisor
+                ${link('https://lumina-insights-ashen.vercel.app', 'demo')} · ${link('https://github.com/IsmailOpu1/Lumina-Insights', 'code')}`,
+  skills: () => FILES['skills.txt'](),
+  contact: () => FILES['contact.txt'](),
+  socials: () => `github     ${link('https://github.com/IsmailOpu1')}\nlinkedin   ${link('https://www.linkedin.com/in/ismail-opu-aa8127276')}\ninstagram  ${link('https://www.instagram.com/opu.uwu/')}\nfacebook   ${link('https://www.facebook.com/profile.php?id=100013636727523', 'facebook.com/ismail-opu')}`,
+  email: () => { window.open(GMAIL, '_blank', 'noopener'); return 'opening Gmail… ✉️'; },
+  github: () => { window.open('https://github.com/IsmailOpu1', '_blank', 'noopener'); return 'opening GitHub…'; },
+  play: () => { window.open('https://haunted-lobby.vercel.app', '_blank', 'noopener'); return '🎮 opening Haunted Lobby… bring friends, and whisper.'; },
+  haunt: () => { closeTerm(); setTimeout(() => setHaunted(true), 350); return 'lights out…'; },
+  ghost: () => { closeTerm(); window.summonGhost(); return 'a ghost is coming… watch the cards 👀'; },
+  stats: () => {
+    fetch('https://raw.githubusercontent.com/IsmailOpu1/IsmailOpu1/main/assets/night-city.json', { cache:'no-cache' })
+      .then(r => r.json())
+      .then(d => print(`total contributions   <span class="c">${+d.allTime}</span>\nlast 12 months        <span class="c">${+d.lastYear}</span>\nbusiest day           <span class="c">${+d.busiestDay}</span>\ncurrent streak        <span class="c">${+d.streak}</span> days (best ${+d.longest})\nupdated               ${esc(d.updated)}\n `))
+      .catch(() => print('could not reach GitHub right now\n '));
+    return 'fetching from GitHub…';
+  },
+  ls: () => '<span class="k">projects/</span>  about.txt  skills.txt  contact.txt',
+  cat: a => a === 'projects' || a === 'projects/' ? CMDS.projects() : FILES[a] ? FILES[a]() : a ? `cat: ${esc(a)}: no such file` : 'usage: cat &lt;file&gt;',
+  cd: () => 'you are already where the good stuff is 🙂',
+  date: () => esc(new Date().toString()),
+  echo: a => esc(a),
+  history: () => termHist.map((h, i) => `${i + 1}  ${esc(h)}`).join('\n') || 'no history yet',
+  coffee: () => '☕ brewing… done. now back to shipping.',
+  hello: () => 'hey 👋 type <span class="k">help</span> to look around.',
+  clear: () => { termOut.innerHTML = ''; return null; },
+  exit: () => { closeTerm(); return null; },
+  sudo: a => {
+    if (/^hire( ismail)?$/i.test(a)) { setTimeout(() => window.open(GMAIL, '_blank', 'noopener'), 700); return '<span class="g">[sudo] permission granted ✓</span>\nexcellent decision. opening Gmail…'; }
+    if (/^rm\b/.test(a)) return '👻 nice try.';
+    return 'ismail is not in the sudoers file. this incident will be reported.\n(hint: try <span class="k">sudo hire ismail</span>)';
+  },
+  rm: () => '👻 nice try.',
+  secrets: () => `<span class="c">1.</span> ghosts peek out from behind the cards as you scroll.
+   catch <span class="c">3</span> and you get a little gift (a different one every time 🎁)
+   impatient? type <span class="k">ghost</span>
+<span class="c">2.</span> ${isTouch ? 'type' : 'close this and type'} <span class="k">boo</span> ${isTouch ? 'here' : 'anywhere on the page'} to turn the lights out 🔦
+<span class="c">3.</span> ${isTouch ? 'you found the terminal. that one counts too.' : 'you found the terminal. press <span class="c">~</span> to open it any time.'}`,
+  boo: () => CMDS.haunt(),
+};
+CMDS.hi = CMDS.hello; CMDS.about = () => FILES['about.txt']();
+document.getElementById('term-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const raw = termIn.value.trim(); termIn.value = '';
+  print(`<span class="p">$</span> <span class="c">${esc(raw)}</span>`);
+  if (!raw) return;
+  termHist.push(raw); histPos = termHist.length;
+  const [cmd, ...rest] = raw.split(/\s+/);
+  const fn = Object.prototype.hasOwnProperty.call(CMDS, cmd.toLowerCase()) ? CMDS[cmd.toLowerCase()] : null;
+  const out = fn ? fn(rest.join(' ')) : `command not found: ${esc(cmd)}. type <span class="k">help</span>`;
+  if (out !== null && out !== undefined) print(out + '\n ');
+});
+
+// the terminal button in the nav
+document.getElementById('nav-term').addEventListener('click', toggleTerm);
+
+/* GIFTS: catching 3 ghosts gives one of these, never the same twice in a row.
+   A shuffled "bag" is kept per visitor, so you see every gift before any repeats. */
+const GIFTS = [
+  ['A wish', 'May the bug you fear most turn out to be a missing semicolon.'],
+  ['Good advice', 'Ship the small version first. Real feedback beats a perfect plan.'],
+  ['A wish', 'May your next coffee be exactly the right temperature.'],
+  ['Good advice', 'Drink some water. Your brain is about 75% of it, and it has been working hard.'],
+  ['A reminder', 'You are allowed to be a beginner. Every expert was one, on purpose.'],
+  ['A wish', 'May all your tests pass on the first run today.'],
+  ['Good advice', 'When you are stuck, explain the problem out loud. Half the time, the answer shows up mid-sentence.'],
+  ['A wish', 'May someone thank you today for something you thought nobody noticed.'],
+  ['Good advice', 'Take a real break: stand up, look at something far away for 20 seconds. Your eyes will thank you.'],
+  ['A reminder', 'Progress is still progress, even when it is slow.'],
+  ['A wish', 'May your Wi-Fi be strong and your notifications be kind.'],
+  ['Good advice', 'Write the note to your future self now. Future you is busy and forgetful.'],
+  ['A wish', 'May the next door you knock on open wide.'],
+  ['Good advice', 'Sleep is a performance tool, not a reward. Go to bed a little earlier tonight.'],
+  ['A reminder', 'Comparison steals joy. Compare yourself to who you were last year.'],
+  ['A wish', 'May you find a song today that you play on repeat.'],
+  ['Good advice', 'Say yes to the small, scary thing. That is usually where the growth is.'],
+  ['A wish', 'May your inbox be light and your weekend be long.'],
+  ['Good advice', 'Call someone you have not talked to in a while. It will mean more to them than you think.'],
+  ['A reminder', 'Rest is part of the work, not a break from it.'],
+  ['A wish', 'May your favourite food be on the table sooner than you expect.'],
+  ['Good advice', 'Done is better than perfect, and shipped is better than done.'],
+  ['A wish', 'May the stars and your deadlines both be on your side this week.'],
+  ['Good advice', 'Learn one new thing today, even a tiny one. Tiny things compound.'],
+  ['A reminder', 'Someone out there is glad you exist. Probably more than one someone.'],
+  ['A wish', 'May your plans work out, and the ones that do not lead somewhere better.'],
+  ['Good advice', 'Be kind in code reviews and in life. People remember how you made them feel.'],
+  ['A wish', 'May today give you at least one proper laugh.'],
+  ['Good advice', 'Write down three things that went right today before you sleep.'],
+  ['A reminder', 'You caught 3 ghosts. You can handle whatever else today throws at you. 👻'],
+];
+function nextGift(){
+  let bag = [];
+  try { bag = JSON.parse(store.get('gift_bag') || '[]').filter(i => i >= 0 && i < GIFTS.length); } catch {}
+  const last = +(store.get('gift_last') ?? -1);
+  if (!bag.length) {
+    bag = GIFTS.map((_, i) => i);
+    for (let i = bag.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [bag[i], bag[j]] = [bag[j], bag[i]]; }
+    if (bag[bag.length - 1] === last) bag.unshift(bag.pop());   // no repeat across a refill
+  }
+  const pick = bag.pop();
+  store.set('gift_bag', JSON.stringify(bag)); store.set('gift_last', pick);
+  return GIFTS[pick];
+}
+const giftEl = document.createElement('div');
+giftEl.id = 'gift'; giftEl.setAttribute('role', 'dialog'); giftEl.setAttribute('aria-label', 'Your gift');
+giftEl.innerHTML = '<div class="gift-card"><div class="gift-ghost"></div><p class="gift-kicker">🎁 You caught 3 ghosts · <span id="gift-type"></span></p><p class="gift-text" id="gift-text"></p><div class="gift-actions"><button type="button" class="plink primary" id="gift-ok">Thank you ✨</button><button type="button" class="plink" id="gift-again">Catch more</button></div></div>';
+document.body.append(giftEl);
+giftEl.querySelector('.gift-ghost').append(ghostImg());
+function closeGift(){ giftEl.classList.remove('show'); }
+function showGift(){
+  hideToast();
+  const [type, text] = nextGift();
+  document.getElementById('gift-type').textContent = type;
+  document.getElementById('gift-text').textContent = text;
+  giftEl.classList.add('show');
+}
+document.getElementById('gift-ok').onclick = closeGift;
+document.getElementById('gift-again').onclick = () => { closeGift(); toast('👻 New round! 3 more ghosts are hiding around the page…'); window.summonGhost(); };
+giftEl.addEventListener('click', e => { if (e.target === giftEl) closeGift(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGift(); });
 
 /* ───────── THREE.JS BACKGROUND ───────── */
 (function(){
