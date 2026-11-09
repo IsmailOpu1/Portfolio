@@ -102,7 +102,7 @@ body[data-available="false"] .hero-badge{border-color:rgba(248,113,113,.25);back
 .btn{display:inline-flex;align-items:center;gap:.55rem;padding:.95rem 1.7rem;border-radius:100px;font-size:.92rem;font-weight:500;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:transform .3s var(--ease),box-shadow .3s,background .3s,border-color .3s;will-change:transform}
 .btn-primary{color:#fff;background:linear-gradient(135deg,var(--purple),var(--purple2));box-shadow:0 10px 30px -10px rgba(124,58,237,.7),inset 0 1px 0 rgba(255,255,255,.2)}
 .btn-primary:hover{box-shadow:0 18px 45px -12px rgba(168,85,247,.85),inset 0 1px 0 rgba(255,255,255,.25)}
-.btn-ghost{color:var(--text);border:1px solid var(--border2);background:rgba(255,255,255,.03);backdrop-filter:blur(8px)}
+.btn-ghost{color:var(--text);border:1px solid var(--border2);background:rgba(255,255,255,.05)}
 .btn-ghost:hover{border-color:var(--purple2);background:rgba(124,58,237,.1)}
 
 /* avatar */
@@ -117,7 +117,7 @@ body[data-available="false"] .hero-badge{border-color:rgba(248,113,113,.25);back
 .avatar-dot{position:absolute;bottom:9%;right:9%;width:22px;height:22px;border-radius:50%;background:var(--status);border:4px solid var(--bg);z-index:3;transition:background .4s}
 .avatar-dot::after{content:'';position:absolute;inset:-7px;border-radius:50%;background:var(--status-glow);animation:pulse 2s ease infinite}
 body[data-available="false"] .avatar-dot::after{animation:none;opacity:.5}
-.float-chip{position:absolute;z-index:4;padding:.55rem .9rem;border-radius:14px;font-size:.75rem;font-family:'JetBrains Mono',monospace;background:rgba(20,17,38,.75);border:1px solid var(--border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);white-space:nowrap;animation:bob 5s ease-in-out infinite;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+.float-chip{position:absolute;z-index:4;padding:.55rem .9rem;border-radius:14px;font-size:.75rem;font-family:'JetBrains Mono',monospace;background:rgba(20,17,38,.9);border:1px solid var(--border);white-space:nowrap;animation:bob 5s ease-in-out infinite;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
 .float-chip b{color:var(--purple3);font-weight:500}
 .chip-a{top:6%;left:-14%}
 .chip-b{bottom:16%;left:-20%;animation-delay:-1.6s}
@@ -139,10 +139,10 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.4rem,6vw,4.6rem);line-height:1;letter-spacing:-.035em;margin-bottom:3.5rem}
 .section-title em{font-style:normal;background:linear-gradient(120deg,var(--purple3),var(--pink),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
-.glass{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.01));border:1px solid var(--border2);border-radius:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:relative;overflow:hidden}
+.glass{background:linear-gradient(160deg,rgba(30,25,52,.88),rgba(14,12,28,.84));border:1px solid var(--border2);border-radius:24px;position:relative;overflow:hidden}
 .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(168,85,247,.55),transparent 45%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s;pointer-events:none}
 .glass:hover::before{opacity:1}
-.tilt{transition:transform .2s ease-out,border-color .4s}
+.tilt{transition:border-color .4s}
 
 /* ABOUT */
 .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:start}
@@ -920,45 +920,51 @@ const nav = document.getElementById('nav');
 const progress = document.getElementById('progress');
 const heroInner = document.getElementById('hero-inner');
 const items3d = [...document.querySelectorAll('[data-3d]')];
+items3d.forEach(el => el._tilt = el.classList.contains('tilt'));
 const navLinks = [...document.querySelectorAll('.nav-links a')];
 const sections = navLinks.map(a => document.querySelector(a.getAttribute('href')));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 let mouseX = 0, mouseY = 0, scrollY = window.scrollY, ticking = false;
+let vh = window.innerHeight, docMax = 1;
+function measurePage(){ vh = window.innerHeight; docMax = Math.max(1, document.documentElement.scrollHeight - vh); }
+measurePage();
+new ResizeObserver(() => { measurePage(); requestRender(); }).observe(document.body);
 
 function render3d(){
   ticking = false;
-  const vh = window.innerHeight;
-  const max = document.documentElement.scrollHeight - vh;
   scrollY = window.scrollY;
-  progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+  progress.style.transform = `scaleX(${scrollY / docMax})`;
   nav.classList.toggle('scrolled', scrollY > 40);
 
   // hero recedes into the distance
   const h = clamp(scrollY / vh, 0, 1);
+  if (h < 1 || heroInner._shown !== false) { heroInner._shown = h < 1;
   heroInner.style.transform = reduceMotion ? '' :
     `translate3d(0,${h * 120}px,${-h * 500}px) rotateX(${h * 18}deg) rotateY(${mouseX * -4}deg)`;
-  heroInner.style.opacity = 1 - h * 1.1;
+  heroInner.style.opacity = 1 - h * 1.1; }
 
   // active nav link
+  // read every position first, then write: interleaving forces a re-layout per element
+  const secTops = sections.map(sec => sec ? sec.getBoundingClientRect().top : Infinity);
+  const rects = reduceMotion ? [] : items3d.map(el => el.getBoundingClientRect());
   let current = 0;
-  sections.forEach((s, i) => { if (s && s.getBoundingClientRect().top < vh * .4) current = i; });
+  secTops.forEach((top, i) => { if (top < vh * .4) current = i; });
   navLinks.forEach((a, i) => a.classList.toggle('active', i === current));
 
   if (reduceMotion) return;
-  for (const el of items3d) {
-    const r = el.getBoundingClientRect();
-    if (r.bottom < -200 || r.top > vh + 200) continue;
+  items3d.forEach((el, i) => {
+    const r = rects[i];
+    if (r.bottom < -200 || r.top > vh + 200) return;
     const enter = clamp((vh - r.top) / (vh * .55), 0, 1);           // 0 → 1 while rising in
     const leave = clamp((r.bottom) / (vh * .35), 0, 1);             // 1 → 0 while exiting top
     const e = 1 - Math.pow(1 - enter, 3);
     const inZ = (1 - e) * -420, inRX = (1 - e) * 38, inY = (1 - e) * 90;
     const outZ = (1 - leave) * -160, outRX = (1 - leave) * -22;
-    const isTilt = el.classList.contains('tilt');
     el.style.transform =
-      `perspective(1200px) translate3d(0,${inY}px,${inZ + outZ}px) rotateX(${inRX + outRX}deg)` +
-      (isTilt ? ' rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))' : '');
+      `perspective(1200px) translate3d(0,${inY.toFixed(1)}px,${(inZ + outZ).toFixed(1)}px) rotateX(${(inRX + outRX).toFixed(2)}deg)` +
+      (el._tilt ? ' rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))' : '');
     el.style.opacity = Math.min(e * 1.15, .25 + leave * .75).toFixed(3);
-  }
+  });
 }
 function requestRender(){ if (!ticking) { ticking = true; requestAnimationFrame(render3d); } }
 window.addEventListener('scroll', requestRender, { passive:true });
@@ -979,7 +985,7 @@ render3d();
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true }); }
   catch { return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x07060d, 0.045);
   const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
@@ -1053,8 +1059,7 @@ render3d();
     requestAnimationFrame(loop);
     if (document.hidden) return;
     t += reduceMotion ? 0 : .005;
-    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const p = window.scrollY / max;
+    const p = scrollY / docMax;
 
     // fly forward through the tunnel with scroll
     camera.position.z = 8 - p * 90;
