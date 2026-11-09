@@ -588,29 +588,28 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
           <div class="stack"><span>React</span><span>TypeScript</span><span>Supabase</span><span>PostgreSQL</span><span>Gemini</span><span>Tailwind</span></div>
           <div class="project-links">
             <a class="plink primary" href="https://lumina-insights-ashen.vercel.app" target="_blank" rel="noopener">Live demo ↗</a>
-            <a class="plink" href="https://github.com/IsmailOpu1/Lumina-Insights" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8 0 3.2.9.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1 .9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>Code</a>
           </div>
         </div>
       </article>
 
       <article class="project featured glass tilt" data-3d>
-        <div class="project-cover" style="--cover:radial-gradient(circle at 40% 35%,#9d174d,#3b0764 50%,#0b0613)">
-          <span class="live-pill"><i style="background:var(--purple3);box-shadow:0 0 8px var(--purple3)"></i>Private · demo on request</span>
-          <div class="cover-art"><span class="cover-glyph">🛍️</span></div>
-          <span class="cover-title">ShopMind AI</span>
+        <div class="project-cover has-shot">
+          <img class="cover-shot" src="projects/shopmind.webp" alt="ShopMind AI landing page: Your store's best salesperson, awake 24/7, with a chat bubble recommending a product" width="1500" height="1500">
+          <span class="live-pill"><i></i>Live · SaaS</span>
         </div>
         <div class="project-body">
-          <span class="project-kicker">E-commerce SaaS</span>
+          <span class="project-kicker">AI e-commerce SaaS</span>
           <h3>ShopMind AI</h3>
-          <p>An AI shopping assistant platform for online stores. Store owners upload their product catalog, customize a chatbot, and embed it on their site to help shoppers find the right products.</p>
+          <p>An AI shopping assistant that online stores add with one script tag. Owners upload their catalog and set up the bot in a dashboard; shoppers chat with it like a shopkeeper who knows every product.</p>
           <ul class="project-points">
-            <li>Bulk product upload from CSV or Excel with drag and drop</li>
-            <li>Customizable chat widget: name, greeting, color and position</li>
-            <li>Dashboard with store stats, secured by row-level security</li>
+            <li>Finds products with hybrid search: pgvector similarity plus keywords, aware of the shopper's budget</li>
+            <li>Streams grounded replies from Gemini, in English, Bangla and Banglish</li>
+            <li>Each store isolated by row-level security, with per-visitor rate limits</li>
           </ul>
-          <div class="stack"><span>React</span><span>TypeScript</span><span>Supabase</span><span>PostgreSQL</span><span>TanStack Query</span><span>Tailwind</span></div>
+          <div class="stack"><span>React</span><span>TypeScript</span><span>Supabase</span><span>pgvector</span><span>Gemini</span><span>Edge Functions</span></div>
           <div class="project-links">
-            <a class="plink primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ismailopu0.0@gmail.com&amp;su=ShopMind%20AI%20demo" target="_blank" rel="noopener">Request a demo ↗</a>
+            <a class="plink primary" href="https://shopmind-ai-tau.vercel.app" target="_blank" rel="noopener">Live demo ↗</a>
+            <a class="plink" href="https://github.com/IsmailOpu1/shopmind-ai-hub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8 0 3.2.9.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1 .9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>Code</a>
           </div>
         </div>
       </article>
