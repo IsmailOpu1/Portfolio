@@ -226,6 +226,20 @@ section{padding:clamp(5rem,10vw,8rem) clamp(1rem,5vw,4rem);position:relative}
 .plink.primary{background:linear-gradient(135deg,var(--purple),var(--purple2));border-color:transparent}
 .plink svg{width:14px;height:14px}
 .more-work{margin-top:2.4rem;text-align:center}
+/* ── live GitHub city ── */
+.city-card{padding:clamp(.6rem,1.4vw,1rem);border-radius:24px}
+.city-stage{position:relative;border-radius:16px;overflow:hidden;cursor:crosshair;touch-action:pan-y;line-height:0}
+.city-stage img{display:block;width:100%;height:auto}
+.city-hl{position:absolute;top:0;bottom:0;pointer-events:none;opacity:0;transition:opacity .2s;background:linear-gradient(180deg,transparent,rgba(168,85,247,.22));border-left:1px solid rgba(192,132,252,.35);border-right:1px solid rgba(192,132,252,.35)}
+.city-tip{position:absolute;top:.8rem;left:0;pointer-events:none;opacity:0;transform:translate(-50%,4px);transition:opacity .2s,transform .2s;line-height:1.35;white-space:nowrap;padding:.45rem .75rem;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text);background:rgba(13,10,28,.92);border:1px solid var(--border)}
+.city-tip b{color:var(--purple3);font-weight:600}
+.city-stage.show .city-hl,.city-stage.show .city-tip{opacity:1}
+.city-stage.show .city-tip{transform:translate(-50%,0)}
+.city-foot{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;padding:1.3rem clamp(.4rem,1vw,.8rem) .5rem}
+.city-stats{display:flex;gap:clamp(1.2rem,3vw,2.6rem);flex-wrap:wrap}
+.city-stats .stat-num{font-size:1.6rem}
+.city-note{color:var(--text3);font-size:.8rem;max-width:340px}
+@media (max-width:640px){.city-stats{gap:1.1rem 1.6rem}.city-stats .stat-num{font-size:1.35rem}}
 
 /* SERVICES */
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
@@ -622,6 +636,31 @@ footer{padding:clamp(4rem,8vw,6rem) clamp(1rem,5vw,4rem) 2rem;border-top:1px sol
   </div>
 </section>
 
+<!-- LIVE GITHUB CITY: drawn nightly from my contributions by a GitHub Action in IsmailOpu1/IsmailOpu1 -->
+<section id="activity" class="stage" hidden>
+  <div class="section-inner">
+    <div data-3d>
+      <p class="section-label">Live from GitHub</p>
+      <h2 class="section-title">Still <em>shipping</em></h2>
+    </div>
+    <div class="city-card glass" data-3d>
+      <div class="city-stage" id="city-stage" aria-describedby="city-note">
+        <div class="city-hl" id="city-hl"></div>
+        <div class="city-tip" id="city-tip" role="status"></div>
+      </div>
+      <div class="city-foot">
+        <div class="city-stats">
+          <div><span class="stat-num" id="cs-total">0</span><span class="stat-label">Contributions</span></div>
+          <div><span class="stat-num" id="cs-year">0</span><span class="stat-label">Last 12 months</span></div>
+          <div><span class="stat-num" id="cs-best">0</span><span class="stat-label">Busiest day</span></div>
+          <div><span class="stat-num" id="cs-streak">0</span><span class="stat-label">Day streak</span></div>
+        </div>
+        <p class="city-note" id="city-note">Each tower is one week of my GitHub activity and lit windows are the days I shipped. Hover a tower to see the week. Redrawn every night.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SERVICES -->
 <section id="services" class="stage">
   <div class="section-inner">
@@ -977,6 +1016,79 @@ window.addEventListener('mousemove', e => {
 // tilt cards need a render on hover too, so their mouse rotation applies
 document.querySelectorAll('.tilt').forEach(c => c.addEventListener('mousemove', requestRender));
 render3d();
+
+/* ───────── LIVE GITHUB CITY ───────── */
+// The SVG + data are redrawn every night by a GitHub Action in the profile repo.
+// ?nc=local loads a local copy from nc-preview/ (for previewing changes before they're pushed).
+(function(){
+  const section = document.getElementById('activity');
+  const stage = document.getElementById('city-stage');
+  if (!section || !stage || !window.fetch) return;
+  const base = new URLSearchParams(location.search).get('nc') === 'local'
+    ? 'nc-preview/' : 'https://raw.githubusercontent.com/IsmailOpu1/IsmailOpu1/main/assets/';
+  Promise.all([
+    fetch(base + 'night-city.svg', { cache:'no-cache' }).then(r => r.ok ? r.text() : Promise.reject(r.status)),
+    fetch(base + 'night-city.json', { cache:'no-cache' }).then(r => r.ok ? r.json() : Promise.reject(r.status)),
+  ]).then(([svgText, data]) => {
+    const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
+    const svg = doc.documentElement;
+    if (svg.nodeName !== 'svg') throw new Error('bad svg');
+    // the page shows the stats in HTML: hide the SVG's own captions and trim the empty strip under the ground
+    const L0 = data.layout, vh0 = L0.ground ? L0.ground + 16 : L0.height;
+    svg.setAttribute('viewBox', `0 0 ${L0.width} ${vh0}`);
+    svg.setAttribute('width', L0.width); svg.setAttribute('height', vh0);
+    const st = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
+    st.textContent = 'text{display:none}';
+    svg.appendChild(st);
+    // shown as an <img>, not inline: thousands of SVG nodes inside the 3D-scrolling
+    // card would be repainted on every scroll frame; an image is one cheap layer
+    const img = new Image(L0.width, vh0);
+    img.alt = `Pixel city of my GitHub contributions: ${data.allTime} in total`;
+    img.decoding = 'async';
+    img.src = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type:'image/svg+xml' }));
+    stage.prepend(img);
+    section.hidden = false;
+    requestRender();
+
+    // stats count up when they come into view, like the hero numbers
+    const stats = { 'cs-total':data.allTime, 'cs-year':data.lastYear, 'cs-best':data.busiestDay, 'cs-streak':data.streak };
+    Object.entries(stats).forEach(([id, v]) => {
+      const el = document.getElementById(id);
+      el.classList.add('count'); el.dataset.to = v;
+      countObs.observe(el);
+    });
+
+    if (isTouch) document.getElementById('city-note').textContent = 'Each tower is one week of my GitHub activity and lit windows are the days I shipped. Tap a tower to see the week. Redrawn every night.';
+
+    // hover / tap a tower to see that week
+    const L = data.layout, tip = document.getElementById('city-tip'), hl = document.getElementById('city-hl');
+    const fmtDate = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' });
+    let last = -1;
+    function pick(clientX){
+      const r = stage.getBoundingClientRect();
+      const x = (clientX - r.left) / r.width * L.width;
+      const i = Math.floor((x - L.x0 + (L.col - L.bw) / 2) / L.col);
+      const w = data.weeks[i];
+      if (!w) { stage.classList.remove('show'); last = -1; return; }
+      if (i !== last) {
+        last = i;
+        tip.innerHTML = w.total
+          ? `<b>${w.total}</b> contribution${w.total === 1 ? '' : 's'} · week of ${fmtDate(w.start)}`
+          : `Lights off · week of ${fmtDate(w.start)}`;
+        const left = (L.x0 + i * L.col - (L.col - L.bw) / 2) / L.width * 100;
+        hl.style.left = left + '%';
+        hl.style.width = (L.col / L.width * 100) + '%';
+        const center = (L.x0 + i * L.col + L.bw / 2) / L.width;
+        const half = tip.offsetWidth / 2 / r.width;
+        tip.style.left = (clamp(center, half + .01, 1 - half - .01) * 100) + '%';
+      }
+      stage.classList.add('show');
+    }
+    stage.addEventListener('pointermove', e => pick(e.clientX));
+    stage.addEventListener('pointerdown', e => pick(e.clientX));
+    stage.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { stage.classList.remove('show'); last = -1; } });
+  }).catch(() => { section.hidden = true; });   // GitHub unreachable: leave the section out
+})();
 
 /* ───────── THREE.JS BACKGROUND ───────── */
 (function(){
