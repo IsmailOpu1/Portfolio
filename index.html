@@ -1236,24 +1236,28 @@ function burst(x, y){
     txt.textContent = '';
     const b = document.createElement('b'); b.textContent = d.repo; txt.append(b);
     if (d.msg) txt.append(' — ' + (d.msg.length > 90 ? d.msg.slice(0, 88) + '…' : d.msg));
-    document.getElementById('ticker-sub').textContent = 'pushed ' + ago(d.at) + ' · view commit ↗';
+    document.getElementById('ticker-sub').textContent = (d.merged ? 'merged ' : 'pushed ') + ago(d.at) + ' · view commit ↗';
     el.hidden = false;
   }
   let cached = null;
   try { cached = JSON.parse(sessionStorage.getItem('ticker') || 'null'); } catch {}
   if (cached && Date.now() - cached.t < 10 * 60000) return show(cached.d);
-  fetch('https://api.github.com/users/IsmailOpu1/events/public?per_page=40')
-    .then(r => r.ok ? r.json() : Promise.reject())
-    .then(events => {
+  // The user events feed lags by hours and isn't sorted, so instead:
+  // repos sorted by last push → that repo's activity log (real-time) → the commit.
+  const api = p => fetch('https://api.github.com/' + p).then(r => r.ok ? r.json() : Promise.reject());
+  api('users/IsmailOpu1/repos?sort=pushed&per_page=6')
+    .then(repos => {
       // skip the profile repo: its nightly bot redraws aren't "work"
-      const push = events.find(e => e.type === 'PushEvent' && e.repo.name !== 'IsmailOpu1/IsmailOpu1');
-      if (!push) return Promise.reject();
-      const repo = push.repo.name.split('/')[1];
-      return fetch(`https://api.github.com/repos/${push.repo.name}/commits/${push.payload.head}`)
-        .then(r => r.ok ? r.json() : null).catch(() => null)
-        .then(c => ({ repo, at: push.created_at,
-          msg: c && c.commit ? c.commit.message.split('\n')[0] : '',
-          url: c && c.html_url ? c.html_url : `https://github.com/${push.repo.name}` }));
+      const r = repos.find(x => !x.fork && x.full_name !== 'IsmailOpu1/IsmailOpu1');
+      if (!r) return Promise.reject();
+      return api(`repos/${r.full_name}/activity?per_page=10`).then(acts => {
+        const a = acts.find(x => /^(push|force_push|pr_merge|merge_queue_merge)$/.test(x.activity_type) && !/^0+$/.test(x.after));
+        if (!a) return Promise.reject();
+        return api(`repos/${r.full_name}/commits/${a.after}`).catch(() => null)
+          .then(c => ({ repo: r.name, at: a.timestamp, merged: /merge/.test(a.activity_type),
+            msg: c && c.commit ? c.commit.message.split('\n')[0] : '',
+            url: c && c.html_url ? c.html_url : r.html_url }));
+      });
     })
     .then(d => { try { sessionStorage.setItem('ticker', JSON.stringify({ t: Date.now(), d })); } catch {} show(d); })
     .catch(() => {});   // offline or rate-limited: just don't show it
